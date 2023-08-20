@@ -3,6 +3,7 @@ package com.ust.exchange.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.camel.Header;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class CamelController {
 	}
 	
 	@GetMapping("/show/{age}")
-	public Employee showbyid(@PathVariable int age){
+	public Employee showbyid(@PathVariable @Header("age") int age){
 		Employee em = null;
 		for(Employee emp:lst) {
 			if(emp.getAge()==age) {
