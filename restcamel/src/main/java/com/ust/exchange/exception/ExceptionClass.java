@@ -1,6 +1,9 @@
 package com.ust.exchange.exception;
 
-public class ExceptionClass extends RuntimeException{
+import org.springframework.stereotype.Component;
+
+@Component
+public class ExceptionClass extends Exception{
 
 	public ExceptionClass() {
 		super("Exception occured");

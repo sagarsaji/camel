@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ust.exchange.entity.Employee;
+import com.ust.exchange.exception.ExceptionClass;
 
 import jakarta.annotation.PostConstruct;
 
 @RestController
-public class CamelController {
+public class CamelController{
 	
 	List<Employee> lst = new ArrayList<>();
 	
@@ -31,7 +32,12 @@ public class CamelController {
 	}
 	
 	@GetMapping("/show/{age}")
-	public Employee showbyid(@PathVariable @Header("age") int age){
+	public Employee showbyid(@PathVariable @Header("age") int age) throws ExceptionClass{
+		
+		if(age>50) {
+			throw new ExceptionClass();
+		}
+		
 		Employee em = null;
 		for(Employee emp:lst) {
 			if(emp.getAge()==age) {
