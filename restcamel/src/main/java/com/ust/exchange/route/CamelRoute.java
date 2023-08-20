@@ -1,7 +1,6 @@
 package com.ust.exchange.route;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.stereotype.Component;
 
 import com.ust.exchange.exception.ExceptionClass;
