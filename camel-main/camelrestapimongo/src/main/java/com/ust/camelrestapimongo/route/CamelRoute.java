@@ -33,7 +33,8 @@ public class CamelRoute extends RouteBuilder {
 			.post("/add").type(Employee.class).to("direct:addemployees")
 			.get("/get").to("direct:getemployees")
 			.get("/get/{id}").to("direct:getemployeebyid")
-			.get("/get/details/{name}").to("direct:getbyname");
+			.get("/get/details/{name}").to("direct:getbyname")
+			.get("/get/details/name/{name}").to("direct:getname");
 		
 		
 
@@ -58,6 +59,12 @@ public class CamelRoute extends RouteBuilder {
 	    .to("mongodb:employeedb?database=" + database + "&collection=" + collection + "&operation=findOneByQuery")
 	    .marshal().json();
 
+		from("direct:getname")
+		.bean("employeeService","findByName")
+		.setHeader("CamelMongoDbCriteria",simple("${body}"))
+		.setHeader("CamelMongoDbLimit",constant(2))
+	    .to("mongodb:employeedb?database=" + database + "&collection=" + collection + "&operation=findAll")
+	    .marshal().json();
 
 
 	}
