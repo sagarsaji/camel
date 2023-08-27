@@ -2,10 +2,12 @@ package com.ust.camelrestapimongo.route;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.mongodb.BasicDBObject;
 import com.ust.camelrestapimongo.entity.Employee;
 import com.ust.camelrestapimongo.service.EmployeeService;
 
@@ -38,6 +40,7 @@ public class CamelRoute extends RouteBuilder {
         .to("mongodb:employeedb?database=" + database + "&collection=" + collection + "&operation=insert")
         .marshal().json();
 		
+		
 		from("direct:getemployees")
 		.to("mongodb:employeedb?database=" + database + "&collection=" + collection + "&operation=findAll")
 		.marshal().json();
@@ -47,19 +50,20 @@ public class CamelRoute extends RouteBuilder {
 		.bean("employeeService","findById")
 	    .to("mongodb:employeedb?database=" + database + "&collection=" + collection + "&operation=findById")
 	    .marshal().json();
-	
+
 		
 		from("direct:getbyname")
-		.bean("employeeService","findByName")
+		.setHeader("CamelMongoDbCriteria", simple("{ name: '${header.name}' }"))
 	    .to("mongodb:employeedb?database=" + database + "&collection=" + collection + "&operation=findOneByQuery")
 	    .marshal().json();
 
+		
 		from("direct:getname")
-		.bean("employeeService","findByName")
-		.setHeader("CamelMongoDbCriteria",simple("${body}"))
-		.setHeader("CamelMongoDbLimit",constant(2))
+	    .setHeader("CamelMongoDbCriteria", simple("{ name: '${header.name}' }"))
+	    .setHeader("CamelMongoDbLimit", constant(2))
 	    .to("mongodb:employeedb?database=" + database + "&collection=" + collection + "&operation=findAll")
 	    .marshal().json();
+
 
 
 	}
