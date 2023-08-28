@@ -2,12 +2,10 @@ package com.ust.camelrestapimongo.route;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.mongodb.BasicDBObject;
 import com.ust.camelrestapimongo.entity.Employee;
 import com.ust.camelrestapimongo.service.EmployeeService;
 
